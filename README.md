@@ -1,33 +1,43 @@
-# rbeast: A Python package for Bayesian changepoint detection and time series decomposition
+# Rbeast: A Python package for Bayesian changepoint detection and time series decomposition
 
-####  BEAST (Bayesian Estimator of Abrupt change, Seasonality, and Trend) is a fast, generic Bayesian model averaging algorithm to decompose time series or 1D sequential data into individual components, such as abrupt changes, trends, and periodic/seasonal variations, as described in <ins>[Zhao et al. (2019)](https://go.osu.edu/beast2019)</ins>. BEAST is useful for changepoint detection (i.e., breakpoints or structural breaks), nonlinear trend analysis, time series decomposition, and time series segmentation. See a list of <ins>[selected studies using BEAST](#selected-publications-using-beastrbeast)</ins>.
-> **BEAST** was impemented in C/C++ but accessible from  R, Python, and Matlab. Code and more information are available at https://github.com/zhaokg/Rbeast.
+####  BEAST (Bayesian Estimator of Abrupt change, Seasonality, and Trend) is a fast, generic Bayesian model averaging algorithm to decompose time series or 1D sequential data into individual components, such as abrupt changes, trends, and periodic/seasonal variations, as described in <ins>[Zhao et al. (2019)](https://go.osu.edu/beast2019)</ins>. BEAST is useful for changepoint detection (i.e., breakpoints or structural breaks), nonlinear trend analysis, time series decomposition, and time series segmentation. See a list of <ins>[selected studies using BEAST](#publication)</ins>.
+> BEAST was impemented in C/C++ but accessible from  R, Python, and Matlab. Check https://github.com/zhaokg/Rbeast for code and more details.
 
 **Quick installation**:
-   * For Python, run **`pip install rbeast`**   
-   * In Matlab, run **`eval(webread('http://b.link/beast',weboptions('cert','')))`**  
-   * In R,      run **`install.packages("Rbeast")`**
+   * For Python, run **`pip install Rbeast`**   
+   * In Matlab,  run **`eval(webread('http://b.link/beast',weboptions('cert','')))`**  
+   * In R,       run **`install.packages("Rbeast")`**
    
 
 ## Installation for Python
 
-  A python package **`rbeast`** has been deposited at [PyPI](https://pypi.org/). In a console, run the command below to install:
+  A package **`Rbeast`** has been deposited at [PyPI](https://pypi.org/). Run the command below in a console to install:
   
   ```python
-    pip install rbeast
+    pip install Rbeast
   ```
- 
+  Currently, a binary wheel file was built only for Windows and Python 3.8. For other OS platforms or Python versions, the installation requires a compiler to build the package. If needed, contact Kaiguang Zhao (zhao.1423@osu.edu) to help build the package for your specific OS platforms and Python versions.
 
  ## Run and test rbeast in Python
 
+The first example is an annual time series of streamflow for the River Nile, starting from Year 1871. As annual data, it is a trend-only signal without any periodic component (i.e., `season='none'`)
   ```python
-    import rbeast as rb
-    nile = rb.load_example('nile')
-    o    = rb.beast( nile["flow"], start=1871, season='none')
-    rb.plot(o)
-    rb.print(o)
+import Rbeast as rb
+nile, year = rb.load_example('nile')
+o          = rb.beast( nile, start=1871, season='none')
+rb.plot(o)
+rb.print(o)
   ```
- 
+  ![](https://raw.githubusercontent.com/greyli/flask-share/master/images/demo.png)
+  
+ The second example is a monthly time series of the Google Search popularity of `beach` over the US. This time series is regullary spaced (i.e., deltat=1 month =1/12 year), with a cyclyic component with a period of 1 year (e.g., freq = 1 year/ deltat = 12): 
+  ```python
+import Rbeast as rb
+beach, year = rb.load_example('beach')
+o = rb.beast(beach, start= 2004, deltat=1/12, freq =12)
+rb.plot(o)
+rb.print(o)
+  ```
    
 
 ## Description
@@ -41,7 +51,7 @@ Interpretation of time series data is affected by model choices. Different model
 >Hu, T., Toman, E.M., Chen, G., Shao, G., Zhou, Y., Li, Y., Zhao, K. and Feng, Y., 2021. [Mapping fine-scale human disturbances in a working landscape with Landsat time series on Google Earth Engine](https://pages.charlotte.edu/gang-chen/wp-content/uploads/sites/184/2021/05/Hu_2021_BEAST-HF-s.pdf). ISPRS Journal of Photogrammetry and Remote Sensing, 176, pp.250-261. (an application paper)
 
 ----
-## Selected publications using BEAST/Rbeast
+## Selected publications using BEAST/Rbeast <a name=publication>
 | Discipline | Publication Title |
 | --- | --- |
 | Remote Sensing| *Li, J., Li, Z., Wu, H., and You, N., 2022. Trend, seasonality, and abrupt change detection method for land surface temperature time-series analysis: Evaluation and improvement. Remote Sensing of Environment, 10.1016/j.rse.2022.113222*|
@@ -55,7 +65,7 @@ Interpretation of time series data is affected by model choices. Different model
 | Applied Math|*Ferguson, Daniel, and François G. Meyer. "Probability density estimation for sets of large graphs with respect to spectral information using stochastic block models." arXiv preprint arXiv:2207.02168 (2022).*|
 | Hydrology | *Zohaib, M. and Choi, M., 2020. Satellite-based global-scale irrigation water use and its contemporary trends. Science of The Total Environment, 714, p.136719.* |
 | Energy Engineering |*Lindig, S., Theristis, M. and Moser, D., 2022. Best practices for photovoltaic performance loss rate calculations. Progress in Energy, 4(2), p.022003.*|
-|Virology|*Shen, L., Sun, M., Song, S., Hu, Q., Wang, N., Ou, G., Guo, Z., Du, J., Shao, Z., Bai, Y. and Liu, K., 2022. The impact of anti‐COVID‐19 nonpharmaceutical interventions on hand, foot, and mouth disease—A spatiotemporal perspective in Xi'an, northwestern China. Journal of medical virology.*|
+|Virology|*Shen, L., Sun, M., Song, S., Hu, Q., Wang, N., Ou, G., Guo, Z., Du, J., Shao, Z., Bai, Y. and Liu, K., 2022. The impact of anti-COVID19 nonpharmaceutical interventions on hand, foot, and mouth disease—A spatiotemporal perspective in Xi'an, northwestern China. Journal of medical virology.*|
 | Pharmaceutical Sciences|*Patzkowski, M.S., Costantino, R.C., Kane, T.M., Nghiem, V.T., Kroma, R.B. and Highland, K.B., 2022. Military Health System Opioid, Tramadol, and Gabapentinoid Prescription Volumes Before and After a Defense Health Agency Policy Release. Clinical Drug Investigation, pp.1-8.*|
 | Geography|*Cai, Y., Liu, S. and Lin, H., 2020. Monitoring the vegetation dynamics in the Dongting Lake Wetland from 2000 to 2019 using the BEAST algorithm based on dense Landsat time series. Applied Sciences, 10(12), p.4209.*|
 | Oceanography|*Pitarch, J., Bellacicco, M., Marullo, S. and Van Der Woerd, H.J., 2021. Global maps of Forel–Ule index, hue angle and Secchi disk depth derived from 21 years of monthly ESA Ocean Colour Climate Change Initiative data. Earth System Science Data, 13(2), pp.481-490.*|
