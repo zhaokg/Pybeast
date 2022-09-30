@@ -10,19 +10,6 @@
 * Python: run  **`pip install Rbeast`**   
 * R lang: run **`install.packages("Rbeast")`** 
 
-<table border="0"  style='border:none;'  bordercolor="#ffffff"  > <tr style='border:none;'  >   
-   <td valign="center" style='border:none;'   > 
-           <img src="https://www.r-pkg.org/badges/version/Rbeast?color=green">  
-           <img src="http://cranlogs.r-pkg.org/badges/grand-total/Rbeast?color=green">
-   </td>
-   <td valign="center" style='border:none;'  > 
-   In CRAN-Task-View: 
-   <a href="https://cran.r-project.org/web/views/TimeSeries.html#forecasting-and-univariate-modeling">[Time Series Analysis]</a> 
-   <a href="https://cran.r-project.org/web/views/Bayesian.html#time-series-models">[Bayesian inference]</a> 
-   <a href="https://cran.r-project.org/web/views/Environmetrics.html#environmental-time-series">[Environmetrics]</a> 
-    </td>  
-  
- </tr></table>
  
 
 ## Installation for Python
