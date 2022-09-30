@@ -1,14 +1,29 @@
 # Rbeast: A Python package for Bayesian changepoint detection and time series decomposition
 
-####  BEAST (Bayesian Estimator of Abrupt change, Seasonality, and Trend) is a fast, generic Bayesian model averaging algorithm to decompose time series or 1D sequential data into individual components, such as abrupt changes, trends, and periodic/seasonal variations, as described in <ins>[Zhao et al. (2019)](https://go.osu.edu/beast2019)</ins>. BEAST is useful for changepoint detection (i.e., breakpoints or structural breaks), nonlinear trend analysis, time series decomposition, and time series segmentation. See a list of <ins>[selected studies using BEAST](#publication)</ins>.
+ 
+####  BEAST (Bayesian Estimator of Abrupt change, Seasonality, and Trend) is a fast, generic Bayesian model averaging algorithm to decompose time series or 1D sequential data into individual components, such as abrupt changes, trends, and periodic/seasonal variations, as described in <ins>[Zhao et al. (2019)](https://go.osu.edu/beast2019)</ins>. BEAST is useful for changepoint detection (i.e., breakpoints or structural breaks), nonlinear trend analysis, time series decomposition, and time series segmentation. See a list of [selected studies using BEAST](#publication).
 > BEAST was impemented in C/C++ but accessible from  R, Python, and Matlab. Check [github.com/zhaokg/Rbeast](https://github.com/zhaokg/Rbeast) for code and more details.
 
 
 **Quick installation**:
 * Matlab: run **`eval(webread('http://b.link/beast',weboptions('cert','')))`**  
 * Python: run  **`pip install Rbeast`**   
-* R lang: run **`install.packages("Rbeast")`**
-   
+* R lang: run **`install.packages("Rbeast")`** 
+
+<table border="0"  style='border:none;'  bordercolor="#ffffff"  > <tr style='border:none;'  >   
+   <td valign="center" style='border:none;'   > 
+           <img src="https://www.r-pkg.org/badges/version/Rbeast?color=green">  
+           <img src="http://cranlogs.r-pkg.org/badges/grand-total/Rbeast?color=green">
+   </td>
+   <td valign="center" style='border:none;'  > 
+   In CRAN-Task-View: 
+   <a href="https://cran.r-project.org/web/views/TimeSeries.html#forecasting-and-univariate-modeling">[Time Series Analysis]</a> 
+   <a href="https://cran.r-project.org/web/views/Bayesian.html#time-series-models">[Bayesian inference]</a> 
+   <a href="https://cran.r-project.org/web/views/Environmetrics.html#environmental-time-series">[Environmetrics]</a> 
+    </td>  
+  
+ </tr></table>
+ 
 
 ## Installation for Python
 
@@ -21,7 +36,7 @@
 
  ## Run and test Rbeast in Python
 
-Import the Rbeast package as rb
+Import the Rbeast package as `rb`:
   ```python
 import Rbeast as rb
   ```
@@ -31,7 +46,8 @@ nile, year = rb.load_example('nile')
 o          = rb.beast( nile, start=1871, season='none')
 rb.plot(o)
 rb.print(o)
-  ```
+o  # see a list of output fields in the output variable o
+```
   ![](  https://github.com/zhaokg/Rbeast/raw/master/Python/Nile.png)
 
  The second example is a monthly time series of the Google Search popularity of `beach` over the US. This time series is reguarly-spaced (i.e., deltat=`1 month` =`1/12 year`); it has a cyclyic component with a period of 1 year (e.g., freq = `period / deltat` =  1 year / 1 month = 1/(1/12) = 12).
@@ -55,17 +71,16 @@ metadata.deltaTime      = 1/12    # regular interval used to aggregate the irreg
 metadata.period         = 1.0     # the period is 1.0 year, so freq= 1.0 /(1/12) = 12 data points per period
 metadata.whichDimIsTime = 1       # the dimension of the input ndvi is (484,10,20): which dim refers to the time. whichDimIsTime is a 1-based index  
 
-extra = rb.args()                # a set of options to specify the outputs or computational configurations
-extra.dumpInputData = True       # make a copy of the aggregated input data in the beast ouput
-extra.numThreadsPerCPU     = 2   # Paralell  computing: use 2 threads per cpu core
-extra.numParThreads        = 0   # `0` means using all CPU cores: total num of ParThreads = numThreadsPerCPU * core Num
+o = rb.beast123(ndvi, metadata, [], [], []) # beast123(data, metadata, prior, mcmc, extra): default values used if not supplied
 
-o = rb.beast123(ndvi, metadata, [], [], extra) # beast123(data, metadata, prior, mcmc, extra): default values used for prior and mcmc if missing
-rb.plot(o[5, 11])     # plot the (6-th row, 12-th col) pixel: Python uses 0-based indices.
+rb.print(o[5, 11])                 # print the (6-th row, 12-th col) pixel: Python uses 0-based indices.
+rb.plot(o[5, 11])                  #  plot the (6-th row, 12-th col) pixel: Python uses 0-based indices.
 
+figure, axes = rb.plot(o[5, 11])   # plot the (6-th row, 12-th col) pixel:  Python uses 0-based indices.
+rb.plot( o[5, 12], fig = figure)   # plot the (6-th row, 13-th col) pixel: Setting fig=figure will use the existing figure to plot
   ```
 
-> Here is another way to supply the time info:
+Below is another way to supply the time info:
     
   ```python 
 ndvi, year, datestr = rb.load_example('ndvi')
@@ -79,11 +94,16 @@ metadata.deltaTime      = 1/12    # regular interval used to aggregate the irreg
 metadata.period         = 1.0     # the period is 1.0 year, so freq= 1.0 /(1/12) = 12 data points per period
 metadata.whichDimIsTime = 1       # the dimension of the input ndvi is (484,10,20): which dim refers to the time. whichDimIsTime is a 1-based index  
 
-o = rb.beast123(ndvi, metadata, [], [], []) # beast123(data, metadata, prior, mcmc, extra): default values used for prior, mcmc, and extra if missing
-rb.print(o[5, 11])              # print the (6-th row, 12-th col) pixel: Python uses 0-based indices.
-figure, axes = rb.plot(o[5, 11])     # plot the (6-th row, 12-th col) pixel:  Python uses 0-based indices.
-rb.plot( o[5, 12], fig = figure)   # plot the (6-th row, 13-th col) pixel: Setting fig=figure will use the existing figure to plot
-  ```
+
+extra = rb.args(                             # a set of options to specify the outputs or computational configurations
+                 dumpInputData    = True,    # make a copy of the aggregated input data in the beast ouput
+                 numThreadsPerCPU = 2,       # Paralell  computing: use 2 threads per cpu core
+                 numParThreads    = 0       # `0` means using all CPU cores: total num of ParThreads = numThreadsPerCPU * core Num           
+                )                 
+
+o = rb.beast123(ndvi, metadata, [], [], extra) # beast123(data, metadata, prior, mcmc, extra): default values used for prior and mcmc if missing
+
+ ```
    
 
 ## Description
@@ -130,4 +150,4 @@ Interpretation of time series data is affected by model choices. Different model
 
 ## Reporting Bugs or getting help
 
-BEAST is distributed as is and without warranty of suitability for application. The one distributed above is still a beta version, with potential room for further improvement. If you encounter flaws with the software (i.e. bugs) please report the issue. Providing a detailed description of the conditions under which the bug occurred will help to identify the bug, you can directly email its maintainer Dr. Kaiguang Zhao at zhao.1423@osu.edu. Alternatively, Use the [Issues tracker](https://github.com/zhaokg/Rbeast/issues) on GitHub to report issues with the software and to request feature enhancements. 
+BEAST is distributed as is and without warranty of suitability for application. The one distributed above is still a beta version, with potential room for further improvement. If you encounter flaws with the software (i.e. bugs) please report the issue. Providing a detailed description of the conditions under which the bug occurred will help to identify the bug, you can directly email its maintainer Dr. Kaiguang Zhao at <zhao.1423@osu.edu>. Alternatively, Use the [Issues tracker](https://github.com/zhaokg/Rbeast/issues) on GitHub to report issues with the software and to request feature enhancements. 
