@@ -21,9 +21,12 @@
 
  ## Run and test Rbeast in Python
 
-The first example is annual streamflow of the River Nile, starting from Year 1871. As annual observations, it has no periodic component (i.e., `season='none'`).
+Import the Rbeast package as rb
   ```python
 import Rbeast as rb
+  ```
+The first example is annual streamflow of the River Nile, starting from Year 1871. As annual observations, it has no periodic component (i.e., `season='none'`).
+  ```python
 nile, year = rb.load_example('nile')
 o          = rb.beast( nile, start=1871, season='none')
 rb.plot(o)
@@ -35,27 +38,52 @@ rb.print(o)
  
  > We follow R's terminology to use `freq` to refer to the number of data points per `period` -- freq = period/deltaT; apparently, this differs from the standard definiton in physics -- freq = 1/period.
   ```python
-import Rbeast as rb
 beach, year = rb.load_example('beach')
 o = rb.beast(beach, start= 2004, deltat=1/12, freq =12)
 rb.plot(o)
 rb.print(o)
   ```
-  The third example is a stack of 484 satellite NDVI images over time, with a spatial dimenion of 10 rows x 20 cols: Each pixel is an irregular time series of 484 NDVI values with periodic variations at a period of 1.0 year. When running, BEAST will first aggragate the irregular time series into regular ones at a specified time interaval of `deltat` (in this example, we choose `deltat`=`1/12 year` =`1 month`, but you may choose other intervals, depending on the neeeds).
-  
+  The third example is a stack of 484 satellite NDVI images over time, with a spatial dimenion of 10 rows x 20 cols: Each pixel is an irregular time series of 484 NDVI values with periodic variations at a period of 1.0 year. When running, BEAST will first aggragate the irregular time series into regular ones at a specified time interaval of `deltat` (in this example, we choose `deltat`=`1/12 year` =`1 month`, but you may choose other intervals, depending on the needs).
+
   ```python 
 ndvi, year, datestr = rb.load_example('ndvi')
 
-metadata      = rb.args()         # create an empty object to suff the attributes: "metadata  = lambda: None" also works
+metadata      = rb.args()         # create an empty object to stuff the attributes: "metadata  = lambda: None" also works
 metadata.isRegular      = False   # data is irregularly-spaced
 metadata.time           = year    # times of individulal images/data points: the unit here is fractional year (e.g., 2004.232)
 metadata.deltaTime      = 1/12    # regular interval used to aggregate the irregular time series (1/12 = 1/12 year = 1 month)
 metadata.period         = 1.0     # the period is 1.0 year, so freq= 1.0 /(1/12) = 12 data points per period
-metadata.whichDimIsTime = 1       # the dimension of the input ndvi is (484,10,20): which dim refers to the time. 
-o = rb.beast123(ndvi, metadata, [], [], []) # beast123(data, metadata, prior, mcmc, extra): default values used for prior, mcmc, and extra if missing
+metadata.whichDimIsTime = 1       # the dimension of the input ndvi is (484,10,20): which dim refers to the time. whichDimIsTime is a 1-based index  
+
+extra = rb.args()                # a set of options to specify the outputs or computational configurations
+extra.dumpInputData = True       # make a copy of the aggregated input data in the beast ouput
+extra.numThreadsPerCPU     = 2   # Paralell  computing: use 2 threads per cpu core
+extra.numParThreads        = 0   # `0` means using all CPU cores: total num of ParThreads = numThreadsPerCPU * core Num
+
+o = rb.beast123(ndvi, metadata, [], [], extra) # beast123(data, metadata, prior, mcmc, extra): default values used for prior and mcmc if missing
+rb.plot(o[5, 11])     # plot the (6-th row, 12-th col) pixel: Python uses 0-based indices.
 
   ```
- 
+
+> Here is another way to supply the time info:
+    
+  ```python 
+ndvi, year, datestr = rb.load_example('ndvi')
+
+metadata      = lambda: None         # create an empty object to stuff the attributes: "metadata  = rb.args()  " also works
+metadata.isRegular      = False      # data is irregularly-spaced
+metadata.time           = rb.args( ) # create an empty object to stuff the 'datestr' and 'strfmt' attributes
+metadata.time.datestr   = datestr    # datestr is a list of file names （e.g., s2_ndvi_2018-01-03.tif) that contain the date info
+metadata.time.strfmt    = 'xx_xxxx_YYYY-mm-dd.xxx'  # the format used to extract the year (YYYY), month (mm), and day (dd) from the strings
+metadata.deltaTime      = 1/12    # regular interval used to aggregate the irregular time series (1/12 = 1/12 year = 1 month)
+metadata.period         = 1.0     # the period is 1.0 year, so freq= 1.0 /(1/12) = 12 data points per period
+metadata.whichDimIsTime = 1       # the dimension of the input ndvi is (484,10,20): which dim refers to the time. whichDimIsTime is a 1-based index  
+
+o = rb.beast123(ndvi, metadata, [], [], []) # beast123(data, metadata, prior, mcmc, extra): default values used for prior, mcmc, and extra if missing
+rb.print(o[5, 11])              # print the (6-th row, 12-th col) pixel: Python uses 0-based indices.
+figure, axes = rb.plot(o[5, 11])     # plot the (6-th row, 12-th col) pixel:  Python uses 0-based indices.
+rb.plot( o[5, 12], fig = figure)   # plot the (6-th row, 13-th col) pixel: Setting fig=figure will use the existing figure to plot
+  ```
    
 
 ## Description
