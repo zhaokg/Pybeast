@@ -1,12 +1,13 @@
 # Rbeast: A Python package for Bayesian changepoint detection and time series decomposition
 
 ####  BEAST (Bayesian Estimator of Abrupt change, Seasonality, and Trend) is a fast, generic Bayesian model averaging algorithm to decompose time series or 1D sequential data into individual components, such as abrupt changes, trends, and periodic/seasonal variations, as described in <ins>[Zhao et al. (2019)](https://go.osu.edu/beast2019)</ins>. BEAST is useful for changepoint detection (i.e., breakpoints or structural breaks), nonlinear trend analysis, time series decomposition, and time series segmentation. See a list of <ins>[selected studies using BEAST](#publication)</ins>.
-> BEAST was impemented in C/C++ but accessible from  R, Python, and Matlab. Check https://github.com/zhaokg/Rbeast for code and more details.
+> BEAST was impemented in C/C++ but accessible from  R, Python, and Matlab. Check [github.com/zhaokg/Rbeast](https://github.com/zhaokg/Rbeast) for code and more details.
+
 
 **Quick installation**:
-   * For Python, run **`pip install Rbeast`**   
-   * In Matlab,  run **`eval(webread('http://b.link/beast',weboptions('cert','')))`**  
-   * In R,       run **`install.packages("Rbeast")`**
+* Matlab: run **`eval(webread('http://b.link/beast',weboptions('cert','')))`**  
+* Python: run  **`pip install Rbeast`**   
+* R lang: run **`install.packages("Rbeast")`**
    
 
 ## Installation for Python
@@ -16,11 +17,11 @@
   ```python
     pip install Rbeast
   ```
-  Currently, a binary wheel file was built only for Windows and Python 3.8. For other OS platforms or Python versions, the installation requires a compiler to build the package. If needed, contact Kaiguang Zhao (zhao.1423@osu.edu) to help build the package for your specific OS platforms and Python versions.
+  Currently, a binary wheel file was built only for Windows and Python 3.8. For other OS platforms or Python versions, the installation requires a compiler to build the package from the C/C++ code, which is a hassle-free process in Linux (requiring gcc) or Mac (requiring xcode). If needed, contact Kaiguang Zhao (zhao.1423@osu.edu) to help build the package for your specific OS platforms and Python versions.
 
- ## Run and test rbeast in Python
+ ## Run and test Rbeast in Python
 
-The first example is an annual time series of streamflow for the River Nile, starting from Year 1871. As annual data, it is a trend-only signal without any periodic component (i.e., `season='none'`)
+The first example is annual streamflow of the River Nile, starting from Year 1871. As annual observations, it has no periodic component (i.e., `season='none'`).
   ```python
 import Rbeast as rb
 nile, year = rb.load_example('nile')
@@ -28,9 +29,11 @@ o          = rb.beast( nile, start=1871, season='none')
 rb.plot(o)
 rb.print(o)
   ```
-  ![](https://raw.githubusercontent.com/greyli/flask-share/master/images/demo.png)
-  
- The second example is a monthly time series of the Google Search popularity of `beach` over the US. This time series is regullary spaced (i.e., deltat=1 month =1/12 year), with a cyclyic component with a period of 1 year (e.g., freq = 1 year/ deltat = 12): 
+  ![](  https://github.com/zhaokg/Rbeast/raw/master/Python/Nile.png)
+
+ The second example is a monthly time series of the Google Search popularity of `beach` over the US. This time series is reguarly-spaced (i.e., deltat=`1 month` =`1/12 year`); it has a cyclyic component with a period of 1 year (e.g., freq = `period / deltat` =  1 year / 1 month = 1/(1/12) = 12).
+ 
+ > We follow R's terminology to use `freq` to refer to the number of data points per `period` -- freq = period/deltaT; apparently, this differs from the standard definiton in physics -- freq = 1/period.
   ```python
 import Rbeast as rb
 beach, year = rb.load_example('beach')
@@ -38,6 +41,21 @@ o = rb.beast(beach, start= 2004, deltat=1/12, freq =12)
 rb.plot(o)
 rb.print(o)
   ```
+  The third example is a stack of 484 satellite NDVI images over time, with a spatial dimenion of 10 rows x 20 cols: Each pixel is an irregular time series of 484 NDVI values with periodic variations at a period of 1.0 year. When running, BEAST will first aggragate the irregular time series into regular ones at a specified time interaval of `deltat` (in this example, we choose `deltat`=`1/12 year` =`1 month`, but you may choose other intervals, depending on the neeeds).
+  
+  ```python 
+ndvi, year, datestr = rb.load_example('ndvi')
+
+metadata      = rb.args()         # create an empty object to suff the attributes: "metadata  = lambda: None" also works
+metadata.isRegular      = False   # data is irregularly-spaced
+metadata.time           = year    # times of individulal images/data points: the unit here is fractional year (e.g., 2004.232)
+metadata.deltaTime      = 1/12    # regular interval used to aggregate the irregular time series (1/12 = 1/12 year = 1 month)
+metadata.period         = 1.0     # the period is 1.0 year, so freq= 1.0 /(1/12) = 12 data points per period
+metadata.whichDimIsTime = 1       # the dimension of the input ndvi is (484,10,20): which dim refers to the time. 
+o = rb.beast123(ndvi, metadata, [], [], []) # beast123(data, metadata, prior, mcmc, extra): default values used for prior, mcmc, and extra if missing
+
+  ```
+ 
    
 
 ## Description
@@ -49,6 +67,7 @@ Interpretation of time series data is affected by model choices. Different model
 >Zhao, K., Valle, D., Popescu, S., Zhang, X. and Mallick, B., 2013. [Hyperspectral remote sensing of plant biochemistry using Bayesian model averaging with variable and band selection](https://www.academia.edu/download/55199778/Hyperspectral-biochemical-Bayesian-chlorophyll-carotenoid-LAI-water-content-foliar-pigment.pdf). Remote Sensing of Environment, 132, pp.102-119. (the mcmc sampler used for BEAST)
 >
 >Hu, T., Toman, E.M., Chen, G., Shao, G., Zhou, Y., Li, Y., Zhao, K. and Feng, Y., 2021. [Mapping fine-scale human disturbances in a working landscape with Landsat time series on Google Earth Engine](https://pages.charlotte.edu/gang-chen/wp-content/uploads/sites/184/2021/05/Hu_2021_BEAST-HF-s.pdf). ISPRS Journal of Photogrammetry and Remote Sensing, 176, pp.250-261. (an application paper)
+
 
 ----
 ## Selected publications using BEAST/Rbeast <a name=publication>
