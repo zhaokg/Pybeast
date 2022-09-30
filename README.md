@@ -1,7 +1,7 @@
 # Rbeast: A Python package for Bayesian changepoint detection and time series decomposition
 
  
-####  BEAST (Bayesian Estimator of Abrupt change, Seasonality, and Trend) is a fast, generic Bayesian model averaging algorithm to decompose time series or 1D sequential data into individual components, such as abrupt changes, trends, and periodic/seasonal variations, as described in <ins>[Zhao et al. (2019)](https://go.osu.edu/beast2019)</ins>. BEAST is useful for changepoint detection (i.e., breakpoints or structural breaks), nonlinear trend analysis, time series decomposition, and time series segmentation. See a list of [selected studies using BEAST](#publication).
+####  BEAST (Bayesian Estimator of Abrupt change, Seasonality, and Trend) is a fast, generic Bayesian model averaging algorithm to decompose time series or 1D sequential data into individual components, such as abrupt changes, trends, and periodic/seasonal variations, as described in <ins>[Zhao et al. (2019)](https://go.osu.edu/beast2019)</ins>. BEAST is useful for changepoint detection (i.e., breakpoints or structural breaks), nonlinear trend analysis, time series decomposition, and time series segmentation. See a list of <a href="#publicationid"> selected studies using BEAST </a>.
 > BEAST was impemented in C/C++ but accessible from  R, Python, and Matlab. Check [github.com/zhaokg/Rbeast](https://github.com/zhaokg/Rbeast) for code and more details.
 
 
@@ -9,13 +9,16 @@
 * Matlab: run **`eval(webread('http://b.link/beast',weboptions('cert','')))`**  
 * Python: run  **`pip install Rbeast`**   
 * R lang: run **`install.packages("Rbeast")`** 
-
- 
+   
 
 ## Installation for Python
 
-  A package **`Rbeast`** has been deposited at [PyPI](https://pypi.org/). Run the command below in a console to install:
-  
+<p  align="left">   
+ <a href= "https://github.com/zhaokg/Rbeast"> <img src="https://img.shields.io/static/v1?style=plastic&logo=github&label=see also&message=github.com/zhaokg/Rbeast&color=brightgreen" height="20"></a>
+</p> 
+
+A package **`Rbeast`** has been deposited here at PyPI: https://pypi.org/project/Rbeast/. Run the command below in a console to install:
+ 
   ```python
     pip install Rbeast
   ```
@@ -105,7 +108,10 @@ Interpretation of time series data is affected by model choices. Different model
 
 
 ----
-## Selected publications using BEAST/Rbeast <a name=publication>
+<h2 id="publicationid"> Selected publications using BEAST/Rbeast  </h2> <a name=publication>
+ 
+ Despite being published originally for ecological and enviornmental applications, BEAST is developed as a generic tool applicable to time series or time-series-like data arising from all disciplines. BEAST is not a heuristic algorithm but a rigorous statistical model. Below is a short list of peer-reviewed pulications that used BEAST for statistical data analysis.
+ 
 | Discipline | Publication Title |
 | --- | --- |
 | Remote Sensing| *Li, J., Li, Z., Wu, H., and You, N., 2022. Trend, seasonality, and abrupt change detection method for land surface temperature time-series analysis: Evaluation and improvement. Remote Sensing of Environment, 10.1016/j.rse.2022.113222*|
