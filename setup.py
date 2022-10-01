@@ -62,7 +62,7 @@ packages = find_namespace_packages(where='./py_src', exclude=['build','tests','e
 #print(packages)
 setup(
     name             = "Rbeast",   
-    version          = '0.1.9',
+    version          = '0.1.10',
     description      = "Python package for Bayesian changepoint detection and time series decomposition",
     author           = "Kaiguang Zhao",
     author_email     = 'zhao.1423@osu.edu',
@@ -91,7 +91,7 @@ setup(
     packages             = packages,    
     package_dir          = {"Rbeast": "py_src/Rbeast","Rbeast.data": "py_src/Rbeast/data", '': '.'},      
     include_package_data = True,      
-    package_data         = {'Rbeast': ['data/nile.csv'],'Rbeast.data': ['beach.csv'] ,'Rbeast': ['data/*.npy','data/*.txt']},
+    package_data         = {'Rbeast': ['data/nile.csv'],'Rbeast.data': ['beach.csv'] ,'Rbeast': ['data/*.npy','data/*.txt','data/*.csv']},
     exclude_package_data = {'': ['*.c','*.cpp']},       
     ext_modules          = [modules]
 )
