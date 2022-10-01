@@ -93,6 +93,8 @@ extra = rb.args(                             # a set of options to specify the o
 
 o = rb.beast123(ndvi, metadata, [], [], extra) # beast123(data, metadata, prior, mcmc, extra): default values used for prior and mcmc if missing
 
+
+
  ```
    
 

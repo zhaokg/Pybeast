@@ -1,0 +1,11 @@
+name: Rbeast
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - matplotlib=2.0.0
+  - pip=18.0
+  - python=3.5.3
+  - setuptools
+  - ipykernel=4.8
+  - numpy=1.12
