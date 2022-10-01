@@ -713,7 +713,7 @@ static void* pyCreateStructObject() {
     return obj;
 }
 static void pySetAddField(void *obj, char *fname, void *value) {
-    if (value == NULL) return NULL;
+    if (value == NULL) return ;
 
     PyObject_SetAttrString(obj, fname, value); // do not steal ref and value is increfed.
     Py_XDECREF(value);  // decref it so    
