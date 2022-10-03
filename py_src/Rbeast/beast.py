@@ -2,31 +2,31 @@ from . import Rbeast as cb
 from numpy import ndarray, squeeze
 
 def beast(Y, \
-          start=1,
-          deltat=1,
-          season='harmonic',       # 'harmonic','dummy','svd (not supported yet)','none'
-          freq  = float('nan'),
-          scp_minmax = [0, 10] ,
-          sorder_minmax = [0, 5],
+          start  = 1,
+          deltat = 1,
+          season = 'harmonic',       # 'harmonic','dummy','svd (not supported yet)','none'
+          freq           = float('nan'),
+          scp_minmax     = [0, 10] ,
+          sorder_minmax  = [0, 5],
           sseg_minlength = None, # an integer
-          tcp_minmax = [0,10 ],
-          torder_minmax = [0, 5],
+          tcp_minmax     = [0,10 ],
+          torder_minmax  = [0, 1],
           tseg_minlength = None,  # an integer
-          detrend = False,
-          deseasonalize = False,
-          mcmc_seed  =0,
-          mcmc_burbin = 200,
-          mcmc_chains = 3,
-          mcmc_thin = 5,
-          mcmc_samples =8000,
-          ci = False,
-          precValue =1.5,
-          precPriorType ='componentwise', #componentwise','uniform','constant','orderwise'
-          print_options =True,
+          detrend        = False,
+          deseasonalize  = False,
+          mcmc_seed    = 0,
+          mcmc_burbin  = 200,
+          mcmc_chains  = 3,
+          mcmc_thin    = 5,
+          mcmc_samples = 8000,
+          ci           = False,
+          precValue    = 1.5,
+          precPriorType  = 'componentwise', #componentwise','uniform','constant','orderwise'
+          print_options  = True,
           print_progress = True,
           hasOutlier = False,
-          ocp_max  = 10,
-          gui     = False
+          ocp_max    = 10,
+          gui        = False
         ):
       
       isNumpyInput = False;
@@ -44,7 +44,7 @@ def beast(Y, \
             Y=squeeze(Y)
                  
     #......Start of displaying 'MetaData' ......
-      metadata = lambda: None   ###Just get an empty object###
+      metadata                  = lambda: None   ###Just get an empty object###
       metadata.isRegularOrdered = True
       metadata.season           = season
       metadata.startTime        = start

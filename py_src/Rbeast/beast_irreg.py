@@ -4,29 +4,29 @@ from numpy import ndarray, squeeze
 def beast_irreg(Y, \
           time,
           deltat,
-          freq=float('nan'),
-          season='harmonic',       # 'harmonic','dummy','svd (not supported yet)','none'
-          scp_minmax = [0, 10] ,
-          sorder_minmax = [0, 5],
+          freq           = float('nan'),
+          season         = 'harmonic',       # 'harmonic','dummy','svd (not supported yet)','none'
+          scp_minmax     = [0, 10] ,
+          sorder_minmax  = [0, 5],
           sseg_minlength = None, # an integer
-          tcp_minmax = [0,10 ],
-          torder_minmax = [0, 5],
+          tcp_minmax     = [0,10 ],
+          torder_minmax  = [0, 1],
           tseg_minlength = None,  # an integer
-          detrend = False,
-          deseasonalize = False,
-          mcmc_seed  =0,
-          mcmc_burbin = 200,
-          mcmc_chains = 3,
-          mcmc_thin = 5,
-          mcmc_samples =8000,
-          ci = False,
-          precValue =1.5,
-          precPriorType ='componentwise', #componentwise','uniform','constant','orderwise'
-          print_options =True,
+          detrend        = False,
+          deseasonalize  = False,
+          mcmc_seed      = 0,
+          mcmc_burbin    = 200,
+          mcmc_chains    = 3,
+          mcmc_thin      = 5,
+          mcmc_samples   = 8000,
+          ci        = False,
+          precValue = 1.5,
+          precPriorType  = 'componentwise', #componentwise','uniform','constant','orderwise'
+          print_options  = True,
           print_progress = True,
           hasOutlier = False,
-          ocp_max  = 10,
-          gui     = False
+          ocp_max    = 10,
+          gui        = False
         ):
 
       
