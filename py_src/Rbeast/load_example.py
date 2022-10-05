@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import genfromtxt as np_genfromtxt,  load as np_load
 import os
 
 
@@ -19,19 +19,19 @@ def load_example(name):
     except Exception as error:
         data_path = os.path.join(os.path.dirname(__file__), 'data', name + '.csv')    
         if (name == 'nile'):
-            x   = np.genfromtxt(data_path, delimiter=',', skip_header=1)
+            x   = np_genfromtxt(data_path, delimiter=',', skip_header=1)
             #data = {'year': x[:, 0], 'flow': x[:, 1]}
             return x[:,1], x[:,0]
         if (name == 'beach'):
-            x = np.genfromtxt(data_path, delimiter=',', skip_header=1)
+            x = np_genfromtxt(data_path, delimiter=',', skip_header=1)
             #data = {'time': x[:, 0], 'y': x[:, 1]}
             return x[:,1], x[:,0]
         
     if (name == 'ndvi'):        
         f1   = os.path.join(os.path.dirname(__file__), 'data',  'ndvi.npy')
-        ndvi = np.load(f1)
+        ndvi = np_load(f1)
         f1 = os.path.join(os.path.dirname(__file__), 'data', 'ndvi_fyear.npy')
-        year = np.load(f1)
+        year = np_load(f1)
         f1 = os.path.join(os.path.dirname(__file__), 'data', 'ndvi_filename.txt')
         with open(f1) as f:
             datestr = [line.rstrip() for line in f]

@@ -24,8 +24,10 @@ from   setuptools import setup, find_packages, Extension,find_namespace_packages
 class get_numpy_include(object):
     """Defer numpy.get_include() until after numpy is installed."""
     def __str__(self):
-        import numpy
-        return numpy.get_include()
+        from numpy import get_include 
+        # this is the only function we need here:  not sure if this help reduce 
+        # the possibility of "runtimeerror: module compiled against api version 0xe but this version of numpy is 0xd"
+        return get_include()
 
 
 
@@ -62,8 +64,8 @@ packages = find_namespace_packages(where='./py_src', exclude=['build','tests','e
 #print(packages)
 setup(
     name             = "Rbeast",   
-    version          = '0.1.12',
-    description      = "Python package for Bayesian changepoint detection and time series decomposition",
+    version          = '0.1.13',
+    description      = "Bayesian changepoint detection and time series decomposition",
     author           = "Kaiguang Zhao",
     author_email     = 'zhao.1423@osu.edu',
     url              = 'https://github.com/zhaokg/Rbeast',    

@@ -1,5 +1,6 @@
-from . import Rbeast as cb
-from numpy import ndarray, squeeze
+from .             import Rbeast as cb
+from .cvt_to_numpy import force_convert_to_numpy
+
 
 def beast(Y, \
           start  = 1,
@@ -29,19 +30,7 @@ def beast(Y, \
           gui        = False
         ):
       
-      isNumpyInput = False;
-      if   isinstance(Y, list) or isinstance(Y, tuple):
-            isNumpyInput = False
-      elif isinstance(Y, ndarray):
-            isNumpyInput = True
-      elif hasattr(Y,'to_numpy'):
-            Y = getattr(Y,'to_numpy')()
-            isNumpyInput = True
-      else:
-            raise ValueError('Unknown formats for the input Y.')
-      
-      if isNumpyInput:
-            Y=squeeze(Y)
+      Y = force_convert_to_numpy(Y)
                  
     #......Start of displaying 'MetaData' ......
       metadata                  = lambda: None   ###Just get an empty object###
