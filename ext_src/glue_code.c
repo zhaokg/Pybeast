@@ -1266,7 +1266,7 @@ PyMODINIT_FUNC PyInit_Rbeast() {
   }
   */
    
-  r_printf("Initialization done!\n");
+//  r_printf("Initialization done!\n");
 
   import_array();  // Load NumPy
 
